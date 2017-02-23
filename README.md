@@ -2,6 +2,8 @@
 
 [Add bot in Telegram](https://t.me/@ShortenerLinksBot).
 
+![preview](http://bifot.ru/data/uploads/shortenerdecryptlinksbot.gif)
+
 ## Available commands
 
 * **/short &#x3C;link&#x3E;** — shorten your link;

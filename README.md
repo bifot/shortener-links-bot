@@ -1,6 +1,6 @@
 # Shortener & Decrypt Links Bot
 
-[Add bot in Telegram](https://t.me/@ShortenerLinksBot).
+[Add bot in Telegram](https://t.me/shortenerlinksbot).
 
 ![preview](http://bifot.ru/data/uploads/shortenerdecryptlinksbot.gif)
 

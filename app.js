@@ -5,7 +5,9 @@ var config = require('./config');
 
 require('./db');
 
-var app = new Telegraf(config.tgtoken);
+var app = new Telegraf(config.tgtoken, { username: 'shortenerlinksbot' });
+
+app.telegram.getMe().then(botInfo => app.options.username = botInfo.username);
 
 // app.use(Telegraf.log());
 

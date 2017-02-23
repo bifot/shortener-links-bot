@@ -6,7 +6,8 @@
 
 ## Available commands
 
-* **/short &#x3C;link&#x3E;** — shorten your link;
+Any message bot receives as a link and tries to reduce it.
+
 * **/long &#x3C;link&#x3E;** — decrypt your link (show original).
 
 ## Install

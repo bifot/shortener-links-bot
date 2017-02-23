@@ -23,39 +23,11 @@ app.command('start', ctx => {
     if (!results[0]) user.save();
   });
 
-  ctx.reply(`*Hello, my dear ${uname}!*\n\nI'm bot and I can:\n\n— shorten your link;\n— decrypt your link (show original).\n\n*Available commands:*\n\n/short <link> — shorten your link;\n/long <link> — decrypt your link (show original).`, Extra.markdown());
+  ctx.reply(`*Hello, my dear ${uname}!*\n\nI'm bot and I can:\n\n— shorten your link;\n— decrypt your link (show original).\n\nAny message bot receives as a link and tries to reduce it.\n\n/long <link> — decrypt your link (show original).`, Extra.markdown());
 });
 
 app.command('help', ctx => {
-  ctx.reply('*Available commands:*\n\n/short <link> — shorten your link;\n/long <link> — decrypt your link (show original).\n\nMade by @bifot.', Extra.markdown());
-});
-
-app.hears(/\/short (.+)/, ctx => {
-  var link = ctx.match[1];
-
-  if (link.search('http') == -1) {
-    var url = `http://${link}`;
-
-    link = url;
-  }
-
-  request({
-    uri: 'https://api.rebrandly.com/v1/links',
-    method: 'POST',
-    body: JSON.stringify({ destination: link }),
-    headers: {
-      'Content-Type': 'application/json',
-      'apikey': config.shtoken
-    }
-  }, (err, response, body) => {
-    if (!err && response.statusCode == 200) {
-      var res = JSON.parse(body);
-
-      ctx.reply(`Long URL was ${res.destination}, short URL is ${res.shortUrl}.`);
-    } else {
-      ctx.reply('Unable to shorten your link. ☹️');
-    }
-  });
+  ctx.reply('Any message bot receives as a link and tries to reduce it.\n\n/long <link> — decrypt your link (show original).\n\nMade by @bifot.', Extra.markdown());
 });
 
 app.hears(/\/long (.+)/, ctx => {
@@ -69,7 +41,7 @@ app.hears(/\/long (.+)/, ctx => {
 
   request(link, (err, response, body) => {
     if (!err && response.statusCode == 200) {
-      ctx.reply(`Short URL was ${link}, long URL is http://${response.socket._host}${response.socket._httpMessage.path}.`);
+      ctx.reply(`http://${response.socket._host}${response.socket._httpMessage.path}`);
     } else {
       ctx.reply('Unable to decrypt your link. ☹️');
     }
@@ -104,8 +76,34 @@ app.command('drop', ctx => {
   }
 });
 
+
+// Shortener by default
 app.on('message', ctx => {
-  ctx.reply('You did not enter any command. For additional help, type /help.');
+  var link = ctx.message.text;
+
+  if (link.search('http') == -1) {
+    var url = `http://${link}`;
+
+    link = url;
+  }
+
+  request({
+    uri: 'https://api.rebrandly.com/v1/links',
+    method: 'POST',
+    body: JSON.stringify({ destination: link }),
+    headers: {
+      'Content-Type': 'application/json',
+      'apikey': config.shtoken
+    }
+  }, (err, response, body) => {
+    if (!err && response.statusCode == 200) {
+      var res = JSON.parse(body);
+
+      ctx.reply(res.shortUrl);
+    } else {
+      ctx.reply('Unable to shorten your link. ☹️');
+    }
+  });
 });
 
 app.startPolling();
